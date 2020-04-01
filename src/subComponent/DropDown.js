@@ -51,7 +51,7 @@ const styles = (theme) => ({
   }
 });
 
-class DropDown extends React.Component {
+class DropDownComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -186,7 +186,7 @@ class DropDown extends React.Component {
   }
 }
 
-DropDown.propTypes = {
+DropDownComponent.propTypes = {
   fullWidth: PropTypes.bool,
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
@@ -196,4 +196,4 @@ DropDown.propTypes = {
   error: PropTypes.string,
 };
 
-export default withStyles(styles)(DropDown);
+export default withStyles(styles)(DropDownComponent);
