@@ -7,6 +7,8 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { Checkbox, Grid, InputLabel } from '@material-ui/core';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 const ITEM_HEIGHT = 40;
 const ITEM_PADDING_TOP = 8;
@@ -22,6 +24,7 @@ const MenuProps = {
 
 const styles = (theme) => ({
   selectField: {
+    backgroundColor:'white',
     minWidth: 120,
     display: 'flex',
     flexWrap: 'wrap', 
@@ -30,11 +33,22 @@ const styles = (theme) => ({
   },
 
   formControl: {
-    minWidth: 120,
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: '1em',
+    '&:hover': {
+      border:'1px solid rgba(0, 0, 0, 1)',
+    },
+    border:'1px solid rgba(0, 0, 0, .3)', 
+    borderRadius:'5px', 
+    margin: theme.spacing * 1,
+    maxWidth: 300,
+    backgroundColor:'white'
   },
+  // formControl: {
+  //   // backgroundColor:'white',
+  //   minWidth: 120,
+  //   display: 'flex',
+  //   flexWrap: 'wrap',
+  //   // marginTop: '1em',
+  // },
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -42,12 +56,13 @@ const styles = (theme) => ({
   },
 
   multipleDropDown: {
-    '&:hover': {
-      border:'1px solid rgba(0, 0, 0, 1)',
-    },
-    border:'1px solid rgba(0, 0, 0, .3)', 
-    borderRadius:'5px', 
-    padding:'8px 0px 8px 10px', 
+    // '&:hover': {
+    //   border:'1px solid rgba(0, 0, 0, 1)',
+    // },
+    minHeight:'40px',
+    // border:'1px solid rgba(0, 0, 0, .3)', 
+    // borderRadius:'5px', 
+    padding:'2px 0px 0px 2px', 
   }
 });
 
@@ -80,6 +95,19 @@ class DropDownComponent extends React.Component {
     return flag ? '#d3d3d3' : 'white';
   }
 
+  getChecked = (id, dataValue) => {
+    let flag = false;
+
+    for(const key in dataValue) {
+      if(dataValue[key][this.props.id].toString().toLowerCase() === id.toString().toLowerCase() ) {
+        flag = true;
+        break;
+      }
+    }
+    
+    return flag;
+  }
+
 
   render() {
     const {
@@ -97,16 +125,18 @@ class DropDownComponent extends React.Component {
     
     if(multiple) {
       return (
-        <FormControl variant="outlined" className={classes.formControl} error={!!this.state.error}>
+        <FormControl className={classes.formControl} error={!!this.state.error} fullWidth>
+          <InputLabel id="demo-mutiple-checkbox-label" style={{marginLeft:'10px', marginTop:'5px'}}>{this.props.placeholder}</InputLabel>
           <Select
-            variant='outlined'
             multiple
             fullWidth
             value={value}
             onChange={onChange}
+            // style={{backgroundColor:'white'}}
             input={
               <Input 
                 className={classes.multipleDropDown}
+                placeholder={'Furniture Styles'}
                 disableUnderline 
                 multiline
                 id="select-multiple-chip" 
@@ -128,13 +158,23 @@ class DropDownComponent extends React.Component {
           >
             {data.map(data => (
               <MenuItem key={data[id]} value={data[id]} style={{backgroundColor: this.getColor(data[id], value)}}>
-                {data[labelName]}
+                <Grid container>
+                  <Grid item xs={6} sm={6} style={{paddingTop:'8px'}}>
+                    {data[labelName]}
+                  </Grid>
+                  
+                  <Grid item xs={6} sm={6} style={{display:'flex',justifyContent: 'flex-end' }}>
+                    <Checkbox       
+                      style={{visibility:'none'}}
+                      checkedIcon={<CheckBoxIcon style={{color:'green'}} />}
+                      checked={this.getChecked(data[id], value)}
+                    />
+                  </Grid>
+                </Grid>
+                
               </MenuItem>
             ))}
           </Select>
-          {this.state.error && (
-            <FormHelperText>{this.state.error}</FormHelperText>
-          )}
         </FormControl>
       ); 
     } else {

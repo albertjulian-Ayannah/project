@@ -7,7 +7,6 @@ export async function getDataFurnitureSaga(param, next) {
 
 
         axios.get(newLink).then((res)=>{    
-            console.log(res)   
             param.furniture = res.data;
             resolve(param)
         }).catch((err)=>{
