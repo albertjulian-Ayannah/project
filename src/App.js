@@ -287,7 +287,7 @@ class App extends React.Component {
     
     return (
       
-      <Grid container style={{display:'flex', justifyContent:'center'}}>
+      <Grid container style={{display:'flex', justifyContent:'center', backgroundColor:'black'}}>
         <Grid item xs={7} sm={7} >
           <Grid container style={{backgroundColor:'#4E57E4', padding:'20px', color:'white'}}>
             <Grid item xs={6} sm={6} style={{marginBottom:'10px', paddingRight: '20px'}}>
@@ -332,7 +332,7 @@ class App extends React.Component {
         </Grid>
 
         <Grid item xs={7} sm={7} >
-          <Grid container style={{padding:20, display:'flex', justifyContent:'space-between'}}>
+          <Grid container style={{backgroundColor:'white', padding:20, display:'flex', justifyContent:'space-between'}}>
 
             {
               this.state.dataListProduct && 
