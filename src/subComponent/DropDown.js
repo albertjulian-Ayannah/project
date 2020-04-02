@@ -39,7 +39,6 @@ const styles = (theme) => ({
     border:'1px solid rgba(0, 0, 0, .3)', 
     borderRadius:'5px', 
     margin: theme.spacing * 1,
-    maxWidth: 300,
     backgroundColor:'white'
   },
   // formControl: {
@@ -125,11 +124,11 @@ class DropDownComponent extends React.Component {
     
     if(multiple) {
       return (
-        <FormControl className={classes.formControl} error={!!this.state.error} fullWidth>
+        <FormControl className={classes.formControl} error={!!this.state.error} fullWidth={fullWidth}>
           <InputLabel id="demo-mutiple-checkbox-label" style={{marginLeft:'10px', marginTop:'5px'}}>{this.props.placeholder}</InputLabel>
           <Select
             multiple
-            fullWidth
+            fullWidth={fullWidth}
             value={value}
             onChange={onChange}
             // style={{backgroundColor:'white'}}

@@ -72,7 +72,6 @@ class App extends React.Component {
     if(data){
       
       if(!data.error){
-        console.log(data.furniture)
         const dataFurniture = data.furniture;
 
         const dataFurnitureStyles = [];
@@ -170,7 +169,7 @@ class App extends React.Component {
         
       }
     }
-    console.log(dataListProduct)
+
     this.setState({dataListProduct})
   }
 
@@ -212,20 +211,84 @@ class App extends React.Component {
   }
 
   onChangeDropDown = (e) => {
-    console.log(e.target.value)
     this.setState({deliveryTime: e.target.value}, () => {
       this.refreshDataFurniture();
     })
   }
 
+  destructStyle = (furnitureStyle) => {
+    let stringStyle = '';
+
+    for(const key in furnitureStyle) {
+      if(stringStyle.length !== 0) {
+        stringStyle += ', '
+      }
+
+      stringStyle += furnitureStyle[key]
+    }
+
+    return stringStyle
+  }
+
+  deleteSeparator = (number, separator) => {
+    while(number.includes(separator)){
+      number = number.replace(separator,"")
+    }
+    return number
+  }
+  
+  isNumeric = (value) => {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
+
+  destructPrice = (number, money) => {
+    
+    number = (number && number.toString().trim()) || ''
+    number = this.deleteSeparator(number,".")
+    let floatingNumber = false;
+    
+    if(number.includes('.')) {
+      const numberSplit = number.split('.')
+      floatingNumber = numberSplit[1];
+      number = numberSplit[0];
+      
+      floatingNumber = floatingNumber.substr(0,2);
+    }
+    
+    let pjg = number.length
+    if(!this.isNumeric(number)){
+      pjg = pjg-1
+      number = number.substr(0,pjg)
+    }
+    let tmp = ""
+    if(pjg>3){
+      while(pjg>3){
+        pjg -= 3
+        tmp = number.substr(pjg,3) + "." + tmp
+      }
+      if(pjg<=3){
+        tmp = number.substr(0,pjg) + "." + tmp
+      }
+      tmp = tmp.substr(0, tmp.length-1)
+    }else{
+      tmp = number
+    }
+  
+    if(money && tmp.length !== 0) {
+      tmp = `Rp ${tmp},00`;
+    } 
+  
+    return tmp.toString().length !== 0 ? `${tmp}${floatingNumber ? `,${floatingNumber}` : ''}` : '-'
+    
+  }
 
   render() {
     const {classes} = this.props;
     
     return (
       
-      <Grid container>
-        <Grid item xs={6} sm={6} >
+      <Grid container style={{display:'flex', justifyContent:'center'}}>
+        <Grid item xs={7} sm={7} >
           <Grid container style={{backgroundColor:'#4E57E4', padding:'20px', color:'white'}}>
             <Grid item xs={6} sm={6} style={{marginBottom:'10px', paddingRight: '20px'}}>
               <TextField 
@@ -248,6 +311,7 @@ class App extends React.Component {
                 placeholder={'Furniture Style'}
                 data={this.state.dataFurnitureStyles}
                 multiple
+                fullWidth
                 value={this.state.furnitureStyle}
                 onChange={this.onChangeDropDownMultiple}
               />
@@ -261,10 +325,55 @@ class App extends React.Component {
                 data={this.state.dataListDeliveryTime}
                 value={this.state.deliveryTime}
                 onChange={this.onChangeDropDown}
+                fullWidth
               />
             </Grid>
           </Grid>
         </Grid>
+
+        <Grid item xs={7} sm={7} >
+          <Grid container style={{padding:20, display:'flex', justifyContent:'space-between'}}>
+
+            {
+              this.state.dataListProduct && 
+              this.state.dataListProduct.map((dataProduct, index) => {
+                return(
+                  <Grid item xs={5} sm={5} 
+                    key={`${dataProduct.name}-${index}`}
+                    style={{padding:20, marginBottom:20, boxShadow:'0px -3px 25px rgba(99,167,181,0.24)', WebkitBoxShadow:'0px -3px 25px rgba(99,167,181,0.24)', borderRadius:'15px'}}
+                  >
+                    <Grid container>
+                      <Grid item xs={6} sm={6}>
+                        <h4> {dataProduct.name} </h4>
+                      </Grid>
+
+                      <Grid item xs={6} sm={6} style={{fontWeight:'bold', display:'flex', justifyContent:'flex-end', color:'orange'}}>
+                        {this.destructPrice(dataProduct.price, true)}
+                      </Grid>
+
+                      <Grid item xs={12} sm={12}>
+                        {`${dataProduct.description.toString().substr(0,114)}${dataProduct.description.toString().length >= 114 ? '....' : ''}`}
+                      </Grid>
+
+                      <Grid item xs={12} sm={12} style={{display:'flex', justifyContent:'flex-start', color:'blue'}}>
+                        {this.destructStyle(dataProduct.furniture_style)}
+                      </Grid>
+
+                      <Grid item xs={12} sm={12} style={{fontWeight:'bold', display:'flex', justifyContent:'flex-end', color:'blue'}}>
+                        <u>{`${dataProduct.delivery_time} ${dataProduct.delivery_time > 1 ? 'Days' : 'Day'}`}</u>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )
+              }, this)
+            }
+            
+            
+
+
+          </Grid>
+        </Grid>
+
       </Grid>
     )
  
