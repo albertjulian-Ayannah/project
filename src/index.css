@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.buttonCustomAsira {
+.buttonCustom {
   background-color: #2076b8;
   border: 0px solid transparent;
   border-radius: 3px;
@@ -16,7 +16,7 @@ body {
   opacity:100%;
 }
 
-.buttonCustomAsira:hover{
+.buttonCustom:hover{
   opacity: 100%;
 }
 
@@ -38,7 +38,7 @@ h2{
   h2 {
     font-size: 1.5rem;
   }
-  .buttonCustomAsira {
+  .buttonCustom {
     font-size: 100%;
   }
 }
@@ -48,7 +48,7 @@ h2{
     font-size: 1.2rem;
   }
 
-  .buttonCustomAsira {
+  .buttonCustom {
     font-size: 60%;
   }
 }
