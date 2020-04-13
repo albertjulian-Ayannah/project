@@ -3,13 +3,13 @@ import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom'
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import './src/index.css';
+import App from './src/App';
+import * as serviceWorker from './src/serviceWorker';
 import {Provider} from 'react-redux'
 import { applyMiddleware,createStore} from 'redux'
 import ReduxThunk from 'redux-thunk'
-import Reducers from './reducers'
+import Reducers from './src/reducers'
 
 
 import './support/fontawesome-free/css/fontawesome.min.css'
